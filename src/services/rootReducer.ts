@@ -1,12 +1,11 @@
-import { combineReducers } from "@reduxjs/toolkit";
+import { combineReducers } from '@reduxjs/toolkit';
 
 import burgerConstructorReducer from './slices/burgerConstructorSlice';
-import ingredientsReducer from './slices/ingredientsSlice';
-import userReducer from './slices/userSlice';
 import feedReducer from './slices/feedSlice';
-import ordersReducer from './slices/ordersSlice';
+import ingredientsReducer from './slices/ingredientsSlice';
 import orderReducer from './slices/orderSlice';
-
+import ordersReducer from './slices/ordersSlice';
+import userReducer from './slices/userSlice';
 
 export const rootReducer = combineReducers({
   user: userReducer,
@@ -14,5 +13,5 @@ export const rootReducer = combineReducers({
   burgerConstructor: burgerConstructorReducer,
   feed: feedReducer,
   orders: ordersReducer,
-  order: orderReducer
+  order: orderReducer,
 });

@@ -10,16 +10,16 @@ export const Profile = (): React.JSX.Element => {
   const dispatch = useDispatch();
 
   const [formValue, setFormValue] = useState({
-    name: user?.name || '',
-    email: user?.email || '',
+    name: user?.name ?? '',
+    email: user?.email ?? '',
     password: '',
   });
 
   useEffect(() => {
     setFormValue((prevState) => ({
       ...prevState,
-      name: user?.name || '',
-      email: user?.email || '',
+      name: user?.name ?? '',
+      email: user?.email ?? '',
     }));
   }, [user]);
 
@@ -44,7 +44,6 @@ export const Profile = (): React.JSX.Element => {
       data.password = formValue.password;
     }
 
-
     try {
       await dispatch(updateUser(data)).unwrap();
 
@@ -52,16 +51,16 @@ export const Profile = (): React.JSX.Element => {
         ...prevState,
         password: '',
       }));
-    } catch {
-
+    } catch (error) {
+      console.error('Не удалось обновить профиль:', error);
     }
   };
 
   const handleCancel = (e: SyntheticEvent): void => {
     e.preventDefault();
     setFormValue({
-      name: user?.name || '',
-      email: user?.email || '',
+      name: user?.name ?? '',
+      email: user?.email ?? '',
       password: '',
     });
   };
@@ -79,7 +78,9 @@ export const Profile = (): React.JSX.Element => {
       isFormChanged={isFormChanged}
       updateUserError={updateUserError}
       handleCancel={handleCancel}
-      handleSubmit={handleSubmit}
+      handleSubmit={(e) => {
+        void handleSubmit(e);
+      }}
       handleInputChange={handleInputChange}
     />
   );

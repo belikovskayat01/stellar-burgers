@@ -1,6 +1,6 @@
 import { LoginUI } from '@ui-pages';
 import { type SyntheticEvent, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { type Location, useLocation, useNavigate } from 'react-router-dom';
 
 import { loginUser } from '@services/slices/userSlice';
 import { useDispatch } from '@services/store';
@@ -13,6 +13,7 @@ export const Login = (): React.JSX.Element => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const from = (location.state as { from?: Location } | null)?.from;
 
   const handleSubmit = async (e: SyntheticEvent): Promise<void> => {
     e.preventDefault();
@@ -21,13 +22,10 @@ export const Login = (): React.JSX.Element => {
     try {
       await dispatch(loginUser({ email, password })).unwrap();
 
-      const from = location.state?.from?.pathname || '/';
-      navigate(from, { replace: true });
+      void navigate(from?.pathname ?? '/', { replace: true });
     } catch (error) {
       setErrorText(
-        typeof error === 'string'
-          ? error
-          : 'Не удалось войти. Проверьте email и пароль.'
+        typeof error === 'string' ? error : 'Не удалось войти. Проверьте email и пароль.'
       );
     }
   };
@@ -39,7 +37,9 @@ export const Login = (): React.JSX.Element => {
       setEmail={setEmail}
       password={password}
       setPassword={setPassword}
-      handleSubmit={handleSubmit}
+      handleSubmit={(e) => {
+        void handleSubmit(e);
+      }}
     />
   );
 };

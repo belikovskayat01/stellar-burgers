@@ -1,6 +1,5 @@
 import { Preloader } from '@ui';
 import { FeedUI } from '@ui-pages';
-
 import { useEffect } from 'react';
 
 import { getFeed } from '@services/slices/feedSlice';
@@ -13,7 +12,7 @@ export const Feed = (): React.JSX.Element => {
   const isLoading = useSelector((state) => state.feed.isLoading);
 
   const handleGetFeeds = (): void => {
-    dispatch(getFeed());
+    void dispatch(getFeed());
   };
 
   useEffect(() => {

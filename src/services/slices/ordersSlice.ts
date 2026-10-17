@@ -1,7 +1,8 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { getOrdersApi } from "@utils/burger-api";
-import type { TOrder } from "@utils-types";
+import { getOrdersApi } from '@utils/burger-api';
+
+import type { TOrder } from '@utils-types';
 
 type TOrdersState = {
   orders: TOrder[];
@@ -12,25 +13,22 @@ type TOrdersState = {
 const initialState: TOrdersState = {
   orders: [],
   isLoading: false,
-  error: null
+  error: null,
 };
 
-export const getOrders = createAsyncThunk<
-  TOrder[],
-  void,
-  { rejectValue: string }
->('orders/getOrders', async (_, { rejectWithValue }) => {
-  try {
-    const response = await getOrdersApi();
-    return response;
-  } catch (error) {
-    return rejectWithValue(
-      error instanceof Error
-        ? error.message
-        : 'Не удалось получить заказы'
-    );
+export const getOrders = createAsyncThunk<TOrder[], void, { rejectValue: string }>(
+  'orders/getOrders',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await getOrdersApi();
+      return response;
+    } catch (error) {
+      return rejectWithValue(
+        error instanceof Error ? error.message : 'Не удалось получить заказы'
+      );
+    }
   }
-});
+);
 
 const ordersSlice = createSlice({
   name: 'orders',
@@ -49,12 +47,10 @@ const ordersSlice = createSlice({
       })
       .addCase(getOrders.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = 
-          action.payload ??
-          action.error.message ??
-          'Не удалось получить заказы';
+        state.error =
+          action.payload ?? action.error.message ?? 'Не удалось получить заказы';
       });
-  }
+  },
 });
 
 export default ordersSlice.reducer;

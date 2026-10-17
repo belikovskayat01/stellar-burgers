@@ -14,9 +14,7 @@ export const OrderCard = memo(function OrderCard({
 }: OrderCardProps): React.JSX.Element | null {
   const location = useLocation();
 
-  const ingredients = useSelector(
-    (state) => state.ingredients.ingredients
-  );
+  const ingredients = useSelector((state) => state.ingredients.ingredients);
 
   const orderInfo = useMemo(() => {
     if (!ingredients.length) return null;

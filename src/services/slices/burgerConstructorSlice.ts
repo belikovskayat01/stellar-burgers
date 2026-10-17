@@ -1,25 +1,21 @@
-import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-import { orderBurgerApi } from "@utils/burger-api";
+import { orderBurgerApi } from '@utils/burger-api';
 
-import type {
-  TConstructorIngredient,
-  TConstructorState,
-  TOrder
-} from '@utils-types';
+import type { TConstructorIngredient, TConstructorState, TOrder } from '@utils-types';
 
 type TBurgerConstructorState = TConstructorState & {
   orderRequest: boolean;
   order: TOrder | null;
   orderError: string | null;
-}
+};
 
 const initialState: TBurgerConstructorState = {
   bun: null,
-  ingredients:[],
+  ingredients: [],
   orderRequest: false,
   order: null,
-  orderError: null
+  orderError: null,
 };
 
 export const orderBurger = createAsyncThunk(
@@ -38,25 +34,20 @@ const burgerConstructorSlice = createSlice({
       state.bun = action.payload;
     },
 
-    addIngredient: (
-      state,
-      action: PayloadAction<TConstructorIngredient>
-    ) => {
+    addIngredient: (state, action: PayloadAction<TConstructorIngredient>) => {
       state.ingredients.push(action.payload);
     },
 
     removeIngredient: (state, action: PayloadAction<string>) => {
-      state.ingredients = state.ingredients.filter(
-        (item) => item.id !== action.payload
-      );
+      state.ingredients = state.ingredients.filter((item) => item.id !== action.payload);
     },
 
     moveIngredient: (
-      state, 
+      state,
       action: PayloadAction<{ fromIndex: number; toIndex: number }>
     ) => {
       const { fromIndex, toIndex } = action.payload;
-      
+
       const [ingredient] = state.ingredients.splice(fromIndex, 1);
 
       state.ingredients.splice(toIndex, 0, ingredient);
@@ -66,9 +57,9 @@ const burgerConstructorSlice = createSlice({
       state.bun = null;
       state.ingredients = [];
       state.order = null;
-    }
+    },
   },
-  
+
   extraReducers: (builder) => {
     builder
       .addCase(orderBurger.pending, (state) => {
@@ -83,10 +74,9 @@ const burgerConstructorSlice = createSlice({
       })
       .addCase(orderBurger.rejected, (state, action) => {
         state.orderRequest = false;
-        state.orderError = 
-          action.error.message ?? 'Не удалось оформить заказ';
+        state.orderError = action.error.message ?? 'Не удалось оформить заказ';
       });
-  }
+  },
 });
 
 export const {
@@ -94,7 +84,7 @@ export const {
   addIngredient,
   removeIngredient,
   moveIngredient,
-  clearConstructor
+  clearConstructor,
 } = burgerConstructorSlice.actions;
 
 export default burgerConstructorSlice.reducer;

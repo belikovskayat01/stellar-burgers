@@ -1,7 +1,8 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { getOrderByNumberApi } from "@utils/burger-api";
-import type { TOrder } from "@utils-types";
+import { getOrderByNumberApi } from '@utils/burger-api';
+
+import type { TOrder } from '@utils-types';
 
 type TOrderState = {
   order: TOrder | null;
@@ -12,7 +13,7 @@ type TOrderState = {
 const initialState: TOrderState = {
   order: null,
   isLoading: false,
-  error: null
+  error: null,
 };
 
 export const getOrderByNumber = createAsyncThunk<
@@ -30,9 +31,7 @@ export const getOrderByNumber = createAsyncThunk<
     return response.orders[0];
   } catch (error) {
     return rejectWithValue(
-      error instanceof Error
-        ? error.message
-        : 'Не удалось получить заказ'
+      error instanceof Error ? error.message : 'Не удалось получить заказ'
     );
   }
 });
@@ -54,12 +53,10 @@ const orderSlice = createSlice({
       })
       .addCase(getOrderByNumber.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = 
-          action.payload ??
-          action.error.message ??
-          'Не удалось получить заказ';
+        state.error =
+          action.payload ?? action.error.message ?? 'Не удалось получить заказ';
       });
-  }
+  },
 });
 
 export default orderSlice.reducer;

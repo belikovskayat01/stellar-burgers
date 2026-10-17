@@ -1,9 +1,10 @@
-
-import type { ReactNode } from 'react';
+import { Preloader } from '@ui';
 import { Navigate, useLocation } from 'react-router-dom';
 
 import { useSelector } from '@services/store';
-import { Preloader } from '@ui';
+
+import type { ReactNode } from 'react';
+import type { Location } from 'react-router-dom';
 
 type TProtectedRouteProps = {
   children: ReactNode;
@@ -12,31 +13,23 @@ type TProtectedRouteProps = {
 
 export const ProtectedRoute = ({
   children,
-  onlyUnAuth = false
+  onlyUnAuth = false,
 }: TProtectedRouteProps): React.JSX.Element => {
-  const isAuthenticated = useSelector(
-    (state) => state.user.isAuthenticated
-  );
-
-  const isLoading = useSelector((state) => state.user.isLoading);
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+  const isAuthChecked = useSelector((state) => state.user.isAuthChecked);
   const location = useLocation();
 
-  if (isLoading) {
+  if (!isAuthChecked) {
     return <Preloader />;
   }
 
   if (onlyUnAuth && isAuthenticated) {
-    return <Navigate to="/" replace />;
+    const from = (location.state as { from?: Location } | null)?.from;
+    return <Navigate to={from ?? '/'} replace />;
   }
 
   if (!onlyUnAuth && !isAuthenticated) {
-    return (
-      <Navigate
-        to="/login"
-        replace
-        state={{ from: location }}
-      />
-    );
+    return <Navigate to="/login" replace state={{ from: location }} />;
   }
 
   return <>{children}</>;

@@ -1,6 +1,6 @@
 import { RegisterUI } from '@ui-pages';
 import { type SyntheticEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { type Location, useLocation, useNavigate } from 'react-router-dom';
 
 import { registerUser } from '@services/slices/userSlice';
 import { useDispatch } from '@services/store';
@@ -13,6 +13,8 @@ export const Register = (): React.JSX.Element => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = (location.state as { from?: Location } | null)?.from;
 
   const handleSubmit = async (e: SyntheticEvent): Promise<void> => {
     e.preventDefault();
@@ -23,11 +25,11 @@ export const Register = (): React.JSX.Element => {
         registerUser({
           email,
           password,
-          name: userName
+          name: userName,
         })
       ).unwrap();
 
-      navigate('/', { replace: true });
+      void navigate(from?.pathname ?? '/', { replace: true });
     } catch (error) {
       setErrorText(
         typeof error === 'string'
@@ -46,7 +48,9 @@ export const Register = (): React.JSX.Element => {
       setEmail={setEmail}
       setPassword={setPassword}
       setUserName={setUserName}
-      handleSubmit={handleSubmit}
+      handleSubmit={(e) => {
+        void handleSubmit(e);
+      }}
     />
   );
 };

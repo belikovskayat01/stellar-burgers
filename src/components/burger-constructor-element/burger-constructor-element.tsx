@@ -1,8 +1,11 @@
 import { BurgerConstructorElementUI } from '@ui';
 import { memo } from 'react';
 
+import {
+  moveIngredient,
+  removeIngredient,
+} from '@services/slices/burgerConstructorSlice';
 import { useDispatch } from '@services/store';
-import { moveIngredient, removeIngredient } from '@services/slices/burgerConstructorSlice';
 
 import type { BurgerConstructorElementProps } from './type';
 
@@ -18,7 +21,7 @@ export const BurgerConstructorElement = memo(function BurgerConstructorElement({
       dispatch(
         moveIngredient({
           fromIndex: index,
-          toIndex: index + 1
+          toIndex: index + 1,
         })
       );
     }
@@ -29,7 +32,7 @@ export const BurgerConstructorElement = memo(function BurgerConstructorElement({
       dispatch(
         moveIngredient({
           fromIndex: index,
-          toIndex: index - 1
+          toIndex: index - 1,
         })
       );
     }

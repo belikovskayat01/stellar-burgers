@@ -1,11 +1,9 @@
 import { BurgerConstructorUI } from '@ui';
 import { useMemo } from 'react';
-
-import { useDispatch, useSelector } from '@services/store';
-
 import { useNavigate } from 'react-router-dom';
 
 import { orderBurger, clearConstructor } from '@services/slices/burgerConstructorSlice';
+import { useDispatch, useSelector } from '@services/store';
 
 import type { TConstructorIngredient } from '@utils-types';
 
@@ -13,25 +11,17 @@ export const BurgerConstructor = (): React.JSX.Element | null => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const constructorItems = useSelector (
-    (state) => state.burgerConstructor
-  );
+  const constructorItems = useSelector((state) => state.burgerConstructor);
 
-  const orderRequest = useSelector(
-    (state) => state.burgerConstructor.orderRequest
-  );
+  const orderRequest = useSelector((state) => state.burgerConstructor.orderRequest);
 
-  const isAuthenticated = useSelector(
-    (state) => state.user.isAuthenticated
-  );
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
 
-  const orderModalData = useSelector(
-    (state) => state.burgerConstructor.order
-  );
+  const orderModalData = useSelector((state) => state.burgerConstructor.order);
 
   const onOrderClick = (): void => {
     if (!isAuthenticated) {
-      navigate('/login');
+      void navigate('/login');
       return;
     }
 
@@ -39,10 +29,11 @@ export const BurgerConstructor = (): React.JSX.Element | null => {
 
     const ingredients = [
       constructorItems.bun._id,
-      ...constructorItems.ingredients.map((item) => item._id)
+      ...constructorItems.ingredients.map((item) => item._id),
+      constructorItems.bun._id,
     ];
 
-    dispatch(orderBurger(ingredients));
+    void dispatch(orderBurger(ingredients));
   };
 
   const closeOrderModal = (): void => {
