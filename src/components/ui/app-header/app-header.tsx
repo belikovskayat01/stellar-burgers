@@ -19,7 +19,7 @@ export const AppHeaderUI = ({ userName }: TAppHeaderUIProps): React.JSX.Element 
           end
           className={({ isActive }) =>
             `text text_type_main-default ${styles.link} ${
-              isActive ? '' : 'text_color_inactive'
+              isActive ? styles.link_active : 'text_color_inactive'
             }`
           }
         >
@@ -31,7 +31,7 @@ export const AppHeaderUI = ({ userName }: TAppHeaderUIProps): React.JSX.Element 
           to="/feed"
           className={({ isActive }) =>
             `text text_type_main-default ${styles.link} ${
-              isActive ? '' : 'text_color_inactive'
+              isActive ? styles.link_active : 'text_color_inactive'
             }`
           }
         >
@@ -48,7 +48,7 @@ export const AppHeaderUI = ({ userName }: TAppHeaderUIProps): React.JSX.Element 
         to="/profile"
         className={({ isActive }) =>
           `text text_type_main-default ${styles.link} ${
-            isActive ? '' : 'text_color_inactive'
+            isActive ? styles.link_active : 'text_color_inactive'
           }`
         }
       >
