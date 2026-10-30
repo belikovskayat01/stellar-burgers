@@ -1,13 +1,7 @@
-import reducer, { getIngredients } from '../ingredientsSlice';
+import reducer, { getIngredients, initialState } from '../ingredientsSlice';
 import type { TIngredient } from '@utils/types';
 
 describe('ingredientsSlice reducer', () => {
-  const initialState = {
-    ingredients: [] as TIngredient[],
-    isLoading: false,
-    error: null as string | null
-  };
-
   const ingredient = {
     _id: 'ingredient-1',
     id: 'ingredient-1',

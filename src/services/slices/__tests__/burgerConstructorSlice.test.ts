@@ -1,4 +1,5 @@
 import reducer, {
+  initialState,
   addBun,
   addIngredient,
   removeIngredient,
@@ -10,13 +11,6 @@ import reducer, {
 import type { TConstructorIngredient } from '@utils-types';
 
 describe('burgerConstructorSlice reducer', () => {
-  const initialState = {
-    bun: null,
-    ingredients: [],
-    orderRequest: false,
-    order: null,
-    orderError: null,
-  };
 
   const bun = {
     _id: 'bun-1',

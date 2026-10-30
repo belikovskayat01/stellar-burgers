@@ -93,42 +93,9 @@ test.describe('Добавление ингредиентов в конструк
       document.cookie = 'accessToken=test-access-token; path=/';
     });
 
-    await page.route('**/auth/user', async (route) => {
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({
-          success: true,
-          user: {
-            email: 'test@example.com',
-            name: 'Test User',
-          },
-        }),
-      });
-    });
-
-    await page.route('**/orders', async (route) => {
-      if (route.request().method() === 'POST') {
-        await route.fulfill({
-          status: 200,
-          contentType: 'application/json',
-          body: JSON.stringify({
-            success: true,
-            name: 'Test Order',
-            order: {
-              _id: 'order-1',
-              status: 'done',
-              name: 'Test Order',
-              createdAt: '2026-01-01T10:00:00.000Z',
-              updatedAt: '2026-01-01T10:00:00.000Z',
-              number: 12345,
-              ingredients: [bun._id, filling._id, bun._id],
-            },
-          }),
-        });
-      } else {
-        await route.continue();
-      }
+    await page.routeFromHAR('./tests/hars/order.har', {
+      url: /\/(auth\/user|orders)$/,
+      update: false,
     });
 
     await page.reload();
